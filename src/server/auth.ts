@@ -51,9 +51,12 @@ export const authOptions: NextAuthOptions = {
     SpotifyProvider({
       clientId: env.DISCORD_CLIENT_ID,
       clientSecret: env.DISCORD_CLIENT_SECRET,
-      authorization: { params: { scope: 'user-read-email user-read-currently-playing user-read-recently-played' } }
-
-
+      authorization: {
+        params: {
+          scope:
+            "user-read-email user-read-currently-playing user-read-recently-played",
+        },
+      },
     }),
     /**
      * ...add more providers here.

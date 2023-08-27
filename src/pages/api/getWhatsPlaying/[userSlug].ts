@@ -4,7 +4,7 @@ import { prisma } from "~/server/db";
 import { generateAccessToken } from "~/server/utils/generateAccessToken";
 import { SpotifyResponse } from "~/types/spotify";
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   // get slug from url
 
   const { userSlug } = req.query;
@@ -47,3 +47,5 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   // res.status(200).json({ userSlug });
 };
+
+export default handler;

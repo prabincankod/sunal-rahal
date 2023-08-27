@@ -13,12 +13,14 @@ const Home: NextPage = () => {
     { enabled: true }
   );
 
-
   return (
     <>
       <Head>
         <title>Sunal Rahal </title>
-        <meta name="description" content="Elevate your music experience with Sunal Rahal: a web app that syncs with Spotify to display your current tracks. Log in effortlessly, groove to your tunes, and share your now-playing through stylish SVG cards. Your music, reimagined." />
+        <meta
+          name="description"
+          content="Elevate your music experience with Sunal Rahal: a web app that syncs with Spotify to display your current tracks. Log in effortlessly, groove to your tunes, and share your now-playing through stylish SVG cards. Your music, reimagined."
+        />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       {/* <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
@@ -47,20 +49,27 @@ const Home: NextPage = () => {
           </div>
         </div>
       </main > */}
-      <div className="bg-green-500 min-h-screen flex flex-col items-center justify-center">
-        <h1 className="text-white text-5xl font-semibold mb-8">Sunal Rahal</h1>
-        <div className="bg-green-700 p-8 rounded-lg shadow-lg flex flex-col items-center">
-          <h2 className="text-white text-2xl font-semibold mb-4">Elevate Your Github Experience</h2>
-          <p className="text-white text-center mb-6">
+      <div className="flex min-h-screen flex-col items-center justify-center bg-green-500">
+        <h1 className="mb-8 text-5xl font-semibold text-white">Sunal Rahal</h1>
+        <div className="flex flex-col items-center rounded-lg bg-green-700 p-8 shadow-lg">
+          <h2 className="mb-4 text-2xl font-semibold text-white">
+            Elevate Your Github Experience
+          </h2>
+          <p className="mb-6 text-center text-white">
             {getWhatsPlaying.data?.data ? (
               <>
-                {getWhatsPlaying.data?.data?.item.name} by {getWhatsPlaying.data?.data?.item.artists[0]?.name}
+                {getWhatsPlaying.data?.data?.item.name} by{" "}
+                {getWhatsPlaying.data?.data?.item.artists[0]?.name}
               </>
-            ) : ("Nothing is playing currently")
-            }
+            ) : (
+              "Nothing is playing currently"
+            )}
           </p>
-          <button onClick={() => getWhatsPlaying.refetch()} className="bg-white text-green-500 px-6 py-3 rounded-full font-semibold hover:bg-green-100 transition duration-300">
-            Get What's Playin'
+          <button
+            onClick={() => getWhatsPlaying.refetch()}
+            className="rounded-full bg-white px-6 py-3 font-semibold text-green-500 transition duration-300 hover:bg-green-100"
+          >
+            Get Whats Playin
           </button>
         </div>
       </div>
@@ -87,7 +96,8 @@ const AuthShowcase: React.FC = () => {
       <p className="text-center text-2xl text-white">
         {sessionData && <span>Logged in as {sessionData.user?.name}</span>}
         {secretMessage && <span> - {secretMessage}</span>}
-        {getWhatsPlaying.data?.data?.item.name} by {getWhatsPlaying.data?.data?.item.artists[0]?.name}
+        {getWhatsPlaying.data?.data?.item.name} by{" "}
+        {getWhatsPlaying.data?.data?.item.artists[0]?.name}
       </p>
       <button
         className="rounded-full bg-white/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-white/20"
@@ -95,6 +105,6 @@ const AuthShowcase: React.FC = () => {
       >
         {sessionData ? "Sign out" : "Sign in"}
       </button>
-    </div >
+    </div>
   );
 };

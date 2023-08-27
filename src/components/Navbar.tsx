@@ -1,15 +1,16 @@
-import { signIn, signOut, useSession } from "next-auth/react"
+import { signIn, signOut, useSession } from "next-auth/react";
 
 const Navbar = () => {
-  const session = useSession()
-  const userId = session?.data?.user.id
+  const session = useSession();
+  const userId = session?.data?.user.id;
   return (
-    <nav className="bg-green-500 p-4 flex justify-between items-center">
-      <div className="text-white font-semibold text-lg">Sunal
+    <nav className="flex items-center justify-between bg-green-500 p-4">
+      <div className="text-lg font-semibold text-white">
+        Sunal
         <span className="text"> Rahal</span>
       </div>
       {userId ? (
-        <div className="text-white font-semibold text-lg">
+        <div className="text-lg font-semibold text-white">
           <span className="text"> Logged In as {session.data.user.name}</span>
           {/* profile avatar card */}
           {/* <div className="flex items-center">
@@ -19,17 +20,29 @@ const Navbar = () => {
 
           {/* sign out button */}
 
-          <button className="bg-green-700 text-white px-4 py-2 rounded" onClick={() => { signOut() }}>Sign Out</button>
+          <button
+            className="rounded bg-green-700 px-4 py-2 text-white"
+            onClick={() => {
+              signOut();
+            }}
+          >
+            Sign Out
+          </button>
         </div>
       ) : (
-        <div className="text-white font-semibold text-lg">
-          <button className="bg-green-700 text-white px-4 py-2 rounded" onClick={() => { signIn() }}>Sign In</button>
+        <div className="text-lg font-semibold text-white">
+          <button
+            className="rounded bg-green-700 px-4 py-2 text-white"
+            onClick={() => {
+              signIn();
+            }}
+          >
+            Sign In
+          </button>
         </div>
-      )
-      }
+      )}
+    </nav>
+  );
+};
 
-    </nav >)
-}
-
-
-export default Navbar
+export default Navbar;
