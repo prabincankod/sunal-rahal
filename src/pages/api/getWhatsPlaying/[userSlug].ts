@@ -39,6 +39,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     });
 
   const spotifyResponse: SpotifyResponse = response.data;
+  const getDataUri = async (url: any) => {
+    const response = await axios.get(url, {
+      responseType: "arraybuffer",
+    });
+    const buffer = Buffer.from(response.data, "binary").toString("base64");
+    return `data:image/png;base64,${buffer}`;
+  };
+  // generate datauri from png url
+  const datauri = await getDataUri(spotifyResponse.item.album?.images[0]?.url);
+
+  console.log(datauri);
 
   console.log(response.data === "");
 
@@ -47,22 +58,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   res.setHeader("Content-Type", "image/svg+xml");
   response.data === ""
     ? res.send(`
-    //   <svg width="400" height="400" xmlns="http://www.w3.org/2000/svg">
-
-    //   <!-- Background -->
-    //   <rect width="100%" height="100%" fill="#1DB954" />
-
-    //   <!-- Spotify Card Logo -->
-    //   <svg x="160" y="20" width="80" height="80" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-    //     <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
-    //   </svg>
-
-    //   <!-- Text -->
-    //   <text x="200" y="230" font-family="Arial" font-size="16" fill="white" text-anchor="middle">Not playing anything</text>
-
-    // </svg>
-    //
-
     <svg width="600" height="150" xmlns="http://www.w3.org/2000/svg">
       <!-- Background -->
       <rect width="100%" height="100%" fill="#1DB954" />
@@ -75,28 +70,20 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
 
 `)
-    : res.send(`<svg width="400" height="400" xmlns="http://www.w3.org/2000/svg">
-
-      <!-- Background -->
-      <rect width="100%" height="100%" fill="#1DB954" />
-
-      <!-- Album Cover -->
-      <image x="50" y="50" width="300" height="300" href="${spotifyResponse.item.album.images[1]?.url}" />
-
-      <!-- Song Details -->
-      <text x="200" y="380" font-family="Arial" font-size="16" fill="white" text-anchor="middle">${spotifyResponse.item.name}</text>
-      <text x="200" y="400" font-family="Arial" font-size="12" fill="white" text-anchor="middle">Artist Name</text>
-
-      <!-- Play/Pause Button -->
-      <circle cx="200" cy="250" r="40" fill="white" />
-      <polygon points="185,230 215,250 185,270" fill="#1DB954" />
-
-      <!-- Spotify Card Logo -->
-      <svg x="160" y="300" width="80" height="80" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
+    : res.send(`
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="2242" height="806" viewBox="0 0 2242 806" fill="none">
+      <rect x="10.5" y="10.5" width="2221" height="785" rx="60.5" fill="#EF5DA8" stroke="#14FF0F" stroke-width="21"/>
+      <text fill="white" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="100" font-weight="800" letter-spacing="0em"><tspan x="1181" y="499.864">${spotifyResponse.item.artists[0]?.name}</tspan></text>
+      <text fill="white" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="100" font-weight="800" letter-spacing="0em"><tspan x="823" y="314.864">${spotifyResponse.item.name}</tspan></text>
+      <circle cx="375" cy="403" r="288" fill="url(#pattern0)"/>
+      <defs>
+      <pattern id="pattern0" patternContentUnits="objectBoundingBox" width="1" height="1">
+      <use xlink:href="#image0_3_17" transform="scale(0.00333333)"/>
+      </pattern>
+      <image id="image0_3_17" width="300" height="300" href="${datauri}"/>
+      </defs>
       </svg>
 
-    </svg>
 `);
 
   // res.status(200).json({ userSlug });
