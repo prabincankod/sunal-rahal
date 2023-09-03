@@ -2,6 +2,7 @@ import axios, { AxiosError, AxiosResponse } from "axios";
 import { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "~/server/db";
 import { generateAccessToken } from "~/server/utils/generateAccessToken";
+import getDataUri from "~/server/utils/getDataUri";
 import { SpotifyResponse } from "~/types/spotify";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -39,13 +40,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     });
 
   const spotifyResponse: SpotifyResponse = response.data;
-  const getDataUri = async (url: any) => {
-    const response = await axios.get(url, {
-      responseType: "arraybuffer",
-    });
-    const buffer = Buffer.from(response.data, "binary").toString("base64");
-    return `data:image/png;base64,${buffer}`;
-  };
 
   console.log(response.data === "");
 
