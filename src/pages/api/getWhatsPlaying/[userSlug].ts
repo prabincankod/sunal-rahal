@@ -46,10 +46,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const buffer = Buffer.from(response.data, "binary").toString("base64");
     return `data:image/png;base64,${buffer}`;
   };
-  // generate datauri from png url
-  const datauri = await getDataUri(spotifyResponse.item.album?.images[0]?.url);
-
-  console.log(datauri);
 
   console.log(response.data === "");
 
@@ -64,7 +60,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
       <!-- Text -->
       <text x="50%" y="50%" font-family="Arial" font-size="24" fill="white" text-anchor="middle">
-        Currently Listening to Spotify 🎵
+        Currently Listening Nothing on Spotify 🎵
       </text>
     </svg>
 
@@ -73,20 +69,24 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     : res.send(`
       <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="2242" height="806" viewBox="0 0 2242 806" fill="none">
       <rect x="10.5" y="10.5" width="2221" height="785" rx="60.5" fill="#EF5DA8" stroke="#14FF0F" stroke-width="21"/>
-      <text fill="white" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="100" font-weight="800" letter-spacing="0em"><tspan x="1181" y="499.864">${spotifyResponse.item.artists[0]?.name}</tspan></text>
-      <text fill="white" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="100" font-weight="800" letter-spacing="0em"><tspan x="823" y="314.864">${spotifyResponse.item.name}</tspan></text>
+      <text fill="white" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="100" font-weight="800" letter-spacing="0em"><tspan x="1181" y="499.864">${
+        spotifyResponse.item.artists[0]?.name
+      }</tspan></text>
+      <text fill="white" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="100" font-weight="800" letter-spacing="0em"><tspan x="823" y="314.864">${
+        spotifyResponse.item.name
+      }</tspan></text>
       <circle cx="375" cy="403" r="288" fill="url(#pattern0)"/>
       <defs>
       <pattern id="pattern0" patternContentUnits="objectBoundingBox" width="1" height="1">
       <use xlink:href="#image0_3_17" transform="scale(0.00333333)"/>
       </pattern>
-      <image id="image0_3_17" width="300" height="300" href="${datauri}"/>
+      <image id="image0_3_17" width="300" height="300" href="${await getDataUri(
+        spotifyResponse.item.album?.images[0]?.url
+      )}"/>
       </defs>
       </svg>
 
 `);
-
-  // res.status(200).json({ userSlug });
 };
 
 export default handler;
