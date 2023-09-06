@@ -9,13 +9,6 @@ import { generateAccessToken } from "~/server/utils/generateAccessToken";
 import { SpotifyResponse } from "~/types/spotify";
 
 export const exampleRouter = createTRPCRouter({
-  hello: publicProcedure
-    .input(z.object({ text: z.string() }))
-    .query(({ input }) => {
-      return {
-        greeting: `Hello ${input.text}`,
-      };
-    }),
   getWhatsPlaying: protectedProcedure.query(async ({ ctx }) => {
     const userAccount = await ctx.prisma.account.findFirst({
       where: { userId: ctx.session.user.id },
