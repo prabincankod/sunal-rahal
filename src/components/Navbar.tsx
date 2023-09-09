@@ -12,14 +12,6 @@ const Navbar = () => {
       {userId ? (
         <div className="text-lg font-semibold text-white">
           <span className="text"> Logged In as {session.data.user.name}</span>
-          {/* profile avatar card */}
-          {/* <div className="flex items-center">
-            <img src={session.data.user.image} alt="profile" className="w-10 h-10 rounded-full" />
-            <span className="text"> {session.data.user.name}</span>
-          </div> */}
-
-          {/* sign out button */}
-
           <button
             className="rounded bg-green-700 px-4 py-2 text-white"
             onClick={() => {
