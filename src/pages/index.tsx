@@ -4,13 +4,28 @@ import Link from "next/link";
 import { signIn, signOut, useSession } from "next-auth/react";
 
 import { api } from "~/utils/api";
+import { useEffect, useState } from "react";
 
 const Home: NextPage = () => {
+  const { data: sessionData } = useSession();
+
   const getWhatsPlaying = api.example.getWhatsPlaying.useQuery(
     undefined, // no input
     { enabled: true }
   );
 
+  const { data } = api.example.getUserName.useQuery();
+  const [localUsername, setLocalUsername] = useState(data?.data);
+
+  const mutateUsername = api.example.setUserName.useMutation();
+  useEffect(() => {
+    setLocalUsername(data?.data);
+  }, [data]);
+
+  const setUserName = () => {
+    const newUsername = localUsername;
+    mutateUsername.mutate({ newUserName: `${newUsername}` });
+  };
   return (
     <>
       <Head>
@@ -21,38 +36,30 @@ const Home: NextPage = () => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      {/* <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
-        <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
-          <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
-            Sunal <span className="text-[hsl(280,100%,70%)]">Rahal</span>
-          </h1>
-          <div className="grid grid-cols-1 gap-4  md:gap-8">
-            <Link
-              className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
-              href="https://create.t3.gg/en/usage/first-steps"
-              target="_blank"
-            >
-              <h3 className=" text-center text-2xl font-bold">What am I listenin?</h3>
-              <div className="text-lg text-center">
-                I can listen any thing from bo burnham to tim minchin
-              </div>
-            </Link>
-
-          </div>
-          <div className="flex flex-col items-center gap-2">
-            <p className="text-2xl text-white">
-              {hello.data ? hello.data.greeting : "Loading..."}
-            </p>
-            <AuthShowcase />
-          </div>
-        </div>
-      </main > */}
       <div className="flex min-h-screen flex-col items-center justify-center bg-green-500">
         <h1 className="mb-8 text-5xl font-semibold text-white">Sunal Rahal</h1>
         <div className="flex flex-col items-center rounded-lg bg-green-700 p-8 shadow-lg">
           <h2 className="mb-4 text-2xl font-semibold text-white">
             Elevate Your Github Experience
           </h2>
+          {typeof data?.data === "string" && (
+            <form onSubmit={setUserName} className="flex items-center">
+              <input
+                value={`${localUsername}`}
+                className="focus:border-cyan rounded-l border border-green-600 bg-green-800 px-4 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring"
+                onChange={(e) => setLocalUsername(e.target.value)}
+                placeholder="Enter your username"
+              />
+
+              <button
+                type="submit"
+                className="rounded-r bg-green-500 px-4 py-2 text-white hover:bg-green-700 focus:border-green-700 focus:outline-none focus:ring"
+              >
+                Submit
+              </button>
+            </form>
+          )}
+
           <p className="mb-6 text-center text-white">
             {getWhatsPlaying.data?.data ? (
               <>
@@ -76,33 +83,3 @@ const Home: NextPage = () => {
 };
 
 export default Home;
-
-const AuthShowcase: React.FC = () => {
-  const { data: sessionData } = useSession();
-
-  const { data: secretMessage } = api.example.getSecretMessage.useQuery(
-    undefined, // no input
-    { enabled: sessionData?.user !== undefined }
-  );
-
-  const getWhatsPlaying = api.example.getWhatsPlaying.useQuery(
-    undefined, // no input
-    { enabled: sessionData?.user !== undefined }
-  );
-  return (
-    <div className="flex flex-col items-center justify-center gap-4">
-      <p className="text-center text-2xl text-white">
-        {sessionData && <span>Logged in as {sessionData.user?.name}</span>}
-        {secretMessage && <span> - {secretMessage}</span>}
-        {getWhatsPlaying.data?.data?.item.name} by{" "}
-        {getWhatsPlaying.data?.data?.item.artists[0]?.name}
-      </p>
-      <button
-        className="rounded-full bg-white/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-white/20"
-        onClick={sessionData ? () => void signOut() : () => void signIn()}
-      >
-        {sessionData ? "Sign out" : "Sign in"}
-      </button>
-    </div>
-  );
-};
