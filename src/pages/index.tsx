@@ -42,22 +42,21 @@ const Home: NextPage = () => {
           <h2 className="mb-4 text-2xl font-semibold text-white">
             Elevate Your Github Experience
           </h2>
-          {typeof data?.data === "string" && (
-            <form onSubmit={setUserName} className="flex items-center">
+          {data?.data !== undefined && (
+            <div className="flex items-center">
               <input
-                value={`${localUsername}`}
+                value={`${localUsername ? localUsername : ""}`}
                 className="focus:border-cyan rounded-l border border-green-600 bg-green-800 px-4 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring"
                 onChange={(e) => setLocalUsername(e.target.value)}
                 placeholder="Enter your username"
               />
-
               <button
-                type="submit"
+                onClick={setUserName}
                 className="rounded-r bg-green-500 px-4 py-2 text-white hover:bg-green-700 focus:border-green-700 focus:outline-none focus:ring"
               >
                 Submit
               </button>
-            </form>
+            </div>
           )}
 
           <p className="mb-6 text-center text-white">
