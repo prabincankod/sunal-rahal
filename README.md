@@ -10,4 +10,4 @@ Sunal Rahal is a music-inspired web application that seamlessly integrates with 
 
 ## Demo
 
-Insert gif or link to demo
+![Prabin Spotify](https://sunal-rahal.vercel.app/api/getWhatsPlaying/prabincankod)
