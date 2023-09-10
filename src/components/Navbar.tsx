@@ -10,10 +10,17 @@ import {
   DropdownMenuSeparator,
 } from "./ui/dropdown-menu";
 import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
+import { useRouter } from "next/router";
+import { getInitials } from "~/lib/utils";
+import { api } from "~/utils/api";
 
 const Navbar = () => {
   const session = useSession();
   const userId = session?.data?.user.id;
+  const router = useRouter();
+  const getWhatsPlaying = api.example.getWhatsPlaying.useQuery(undefined, {
+    enabled: session.data?.user.id ? true : false,
+  });
   return (
     <nav className="flex items-center justify-between  p-4">
       <div className="text-lg font-semibold">
@@ -25,17 +32,25 @@ const Navbar = () => {
           <DropdownMenu>
             <DropdownMenuTrigger>
               <Avatar>
-                <AvatarImage src="https://github.com/prabincankod.png" />
-                <AvatarFallback>PS</AvatarFallback>
+                {session.data.user.image ? (
+                  <AvatarImage src={session.data.user?.image} />
+                ) : (
+                  <AvatarFallback>
+                    {getInitials(`${session.data.user?.name}`)}
+                  </AvatarFallback>
+                )}
               </Avatar>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="mr-3">
               <DropdownMenuLabel>
-                {" "}
                 Logged in as {session.data.user.name}
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => {
+                  router.push("/profile");
+                }}
+              >
                 <User className="mr-2 h-5 w-5 " />
                 <span>Profile</span>
               </DropdownMenuItem>
@@ -46,6 +61,15 @@ const Navbar = () => {
               >
                 <LogOutIcon className="mr-2 h-5 w-5 " /> <span>Logout</span>
               </DropdownMenuItem>
+
+              {session.data.user.id && getWhatsPlaying.data?.data && (
+                <>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuLabel>
+                    {getWhatsPlaying.data.data.item.name}
+                  </DropdownMenuLabel>
+                </>
+              )}
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

@@ -10,7 +10,9 @@ import { LogInIcon } from "lucide-react";
 
 const Home: NextPage = () => {
   const { data: sessionData } = useSession();
-
+  const getUsername = api.example.getUserName.useQuery(undefined, {
+    enabled: sessionData?.user.id ? true : false,
+  });
   return (
     <>
       <Head>
@@ -49,7 +51,13 @@ const Home: NextPage = () => {
         <div className=" mt-3 min-w-full  max-w-full rounded-md border-2 border-dashed  border-stone-400 bg-white  p-1">
           <img
             className=" min-w-full max-w-full   rounded-lg "
-            src="https://sunal-rahal.vercel.app/api/getWhatsPlaying/prabincankod"
+            src={`https://sunal-rahal.vercel.app/api/getWhatsPlaying/${
+              sessionData?.user.id
+                ? getUsername.data?.data
+                  ? getUsername.data.data
+                  : "prabincankod"
+                : "prabincankod"
+            }`}
             alt=""
           />
         </div>
