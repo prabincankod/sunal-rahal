@@ -5,27 +5,12 @@ import { signIn, signOut, useSession } from "next-auth/react";
 
 import { api } from "~/utils/api";
 import { useEffect, useState } from "react";
+import { Button } from "~/components/ui/button";
+import { LogInIcon } from "lucide-react";
 
 const Home: NextPage = () => {
   const { data: sessionData } = useSession();
 
-  const getWhatsPlaying = api.example.getWhatsPlaying.useQuery(
-    undefined, // no input
-    { enabled: true }
-  );
-
-  const { data } = api.example.getUserName.useQuery();
-  const [localUsername, setLocalUsername] = useState(data?.data);
-
-  const mutateUsername = api.example.setUserName.useMutation();
-  useEffect(() => {
-    setLocalUsername(data?.data);
-  }, [data]);
-
-  const setUserName = () => {
-    const newUsername = localUsername;
-    mutateUsername.mutate({ newUserName: `${newUsername}` });
-  };
   return (
     <>
       <Head>
@@ -36,45 +21,37 @@ const Home: NextPage = () => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="flex min-h-screen flex-col items-center justify-center bg-green-500">
-        <h1 className="mb-8 text-5xl font-semibold text-white">Sunal Rahal</h1>
-        <div className="flex flex-col items-center rounded-lg bg-green-700 p-8 shadow-lg">
-          <h2 className="mb-4 text-2xl font-semibold text-white">
-            Elevate Your Github Experience
-          </h2>
-          {data?.data !== undefined && (
-            <div className="flex items-center">
-              <input
-                value={`${localUsername ? localUsername : ""}`}
-                className="focus:border-cyan rounded-l border border-green-600 bg-green-800 px-4 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring"
-                onChange={(e) => setLocalUsername(e.target.value)}
-                placeholder="Enter your username"
-              />
-              <button
-                onClick={setUserName}
-                className="rounded-r bg-green-500 px-4 py-2 text-white hover:bg-green-700 focus:border-green-700 focus:outline-none focus:ring"
-              >
-                Submit
-              </button>
-            </div>
-          )}
 
-          <p className="mb-6 text-center text-white">
-            {getWhatsPlaying.data?.data ? (
-              <>
-                {getWhatsPlaying.data?.data?.item.name} by{" "}
-                {getWhatsPlaying.data?.data?.item.artists[0]?.name}
-              </>
-            ) : (
-              "Nothing is playing currently"
-            )}
-          </p>
-          <button
-            onClick={() => getWhatsPlaying.refetch()}
-            className="rounded-full bg-white px-6 py-3 font-semibold text-green-500 transition duration-300 hover:bg-green-100"
-          >
-            Get Whats Playin
-          </button>
+      <div className="flex flex-col items-center text-center ">
+        <div className="flex items-center text-center">
+          <h1 className="bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))]  from-violet-600 via-violet-500 to-violet-200  bg-clip-text text-5xl font-bold text-transparent">
+            Your Spotify Visualized
+          </h1>
+        </div>
+
+        <p className="mt-2 max-w-xl text-lg text-slate-600 ">
+          Join Now and Beautifully showcase your currently playing tracks
+          through SVG cards on Github.
+        </p>
+
+        {!sessionData?.user.id && (
+          <div className="mt-3 flex items-center text-center ">
+            <Button
+              onClick={() => {
+                void signIn("spotify");
+              }}
+            >
+              Login Via Spotify <LogInIcon className="ml-2 h-5 w-5" />
+            </Button>
+          </div>
+        )}
+
+        <div className=" mt-3 min-w-full  max-w-full rounded-md border-2 border-dashed  border-stone-400 bg-white  p-1">
+          <img
+            className=" min-w-full max-w-full   rounded-lg "
+            src="https://sunal-rahal.vercel.app/api/getWhatsPlaying/prabincankod"
+            alt=""
+          />
         </div>
       </div>
     </>
