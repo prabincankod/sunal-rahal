@@ -7,12 +7,18 @@ import { api } from "~/utils/api";
 import { useEffect, useState } from "react";
 import { Button } from "~/components/ui/button";
 import { LogInIcon } from "lucide-react";
+import toast, { Toaster } from "react-hot-toast";
 
 const Home: NextPage = () => {
   const { data: sessionData } = useSession();
   const getUsername = api.example.getUserName.useQuery(undefined, {
     enabled: sessionData?.user.id ? true : false,
   });
+  useEffect(() => {
+    sessionData?.user.id
+      ? toast.success(`Logged In as ${sessionData.user?.name}`)
+      : toast("Your Not Logged In", { icon: "🔥" });
+  }, [sessionData?.user.id]);
   return (
     <>
       <Head>
