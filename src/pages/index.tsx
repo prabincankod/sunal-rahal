@@ -15,9 +15,8 @@ const Home: NextPage = () => {
     enabled: sessionData?.user.id ? true : false,
   });
   useEffect(() => {
-    sessionData?.user.id
-      ? toast.success(`Logged In as ${sessionData.user?.name}`)
-      : toast("Your Not Logged In", { icon: "🔥" });
+    sessionData?.user.id && toast.success(`Logged In as ${sessionData.user?.name}`)
+
   }, [sessionData?.user.id]);
   return (
     <>
