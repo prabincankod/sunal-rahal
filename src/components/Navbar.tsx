@@ -1,6 +1,6 @@
 import { signIn, signOut, useSession } from "next-auth/react";
 import { Button } from "./ui/button";
-import { LogInIcon, LogOutIcon, User } from "lucide-react";
+import { LogInIcon, Music, LogOutIcon, User, PlayCircle } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import {
   DropdownMenu,
@@ -66,7 +66,20 @@ const Navbar = () => {
                 <>
                   <DropdownMenuSeparator />
                   <DropdownMenuLabel>
-                    {getWhatsPlaying.data.data.item.name}
+                    {!getWhatsPlaying.data.data.item.name ? (
+                      "Pay For Spotify"
+                    ) : (
+                      <div className="flex items-center ">
+                        <PlayCircle
+                          className={`${
+                            getWhatsPlaying.data.data.is_playing
+                              ? "animate-spin"
+                              : ""
+                          }  mr-2 h-4 w-4`}
+                        />
+                        {getWhatsPlaying.data.data.item.name}
+                      </div>
+                    )}
                   </DropdownMenuLabel>
                 </>
               )}
