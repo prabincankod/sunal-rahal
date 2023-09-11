@@ -66,7 +66,7 @@ const Navbar = () => {
                 <>
                   <DropdownMenuSeparator />
                   <DropdownMenuLabel>
-                    {!getWhatsPlaying.data.data.item.name ? (
+                    {!getWhatsPlaying.data.data ? (
                       "Pay For Spotify"
                     ) : (
                       <div className="flex items-center ">
