@@ -1,6 +1,5 @@
-import { signIn, signOut, useSession } from "next-auth/react";
-import { Button } from "./ui/button";
-import { LogInIcon, Music, LogOutIcon, User, PlayCircle } from "lucide-react";
+import { signOut, useSession } from "next-auth/react";
+import { LogOutIcon, User, PlayCircle } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import {
   DropdownMenu,

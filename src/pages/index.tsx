@@ -28,44 +28,43 @@ const Home: NextPage = () => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-        <div className="flex flex-col items-center text-center ">
-          <div className="flex items-center text-center">
-            <h1 className="bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))]  from-violet-600 via-violet-500 to-violet-200  bg-clip-text text-5xl font-bold text-transparent">
-              Your Spotify Visualized
-            </h1>
+
+      <div className="flex flex-col items-center text-center ">
+        <div className="flex items-center text-center">
+          <h1 className="bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))]  from-violet-600 via-violet-500 to-violet-200  bg-clip-text text-5xl font-bold text-transparent">
+            Your Spotify Visualized
+          </h1>
+        </div>
+
+        <p className="mt-2 max-w-xl text-lg text-slate-600 ">
+          Join Now and Beautifully showcase your currently playing tracks
+          through SVG cards on Github.
+        </p>
+
+        {!sessionData?.user.id && (
+          <div className="mt-3 flex items-center text-center ">
+            <Button
+              onClick={() => {
+                void signIn("spotify");
+              }}
+            >
+              Login Via Spotify <LogInIcon className="ml-2 h-5 w-5" />
+            </Button>
           </div>
+        )}
 
-          <p className="mt-2 max-w-xl text-lg text-slate-600 ">
-            Join Now and Beautifully showcase your currently playing tracks
-            through SVG cards on Github.
-          </p>
-
-          {!sessionData?.user.id && (
-            <div className="mt-3 flex items-center text-center ">
-              <Button
-                onClick={() => {
-                  void signIn("spotify");
-                }}
-              >
-                Login Via Spotify <LogInIcon className="ml-2 h-5 w-5" />
-              </Button>
-            </div>
-          )}
-
-          <div className=" mt-3 min-w-full  max-w-full rounded-md border-2 border-dashed  border-stone-400 bg-white  p-1">
-            <img
-              className=" min-w-full max-w-full   rounded-lg "
-              src={`https://sunal-rahal.vercel.app/api/getWhatsPlaying/${
-                sessionData?.user.id
-                  ? getUsername.data?.data
-                    ? getUsername.data.data
-                    : "prabincankod"
+        <div className=" mt-3 min-w-full  max-w-full rounded-md border-2 border-dashed  border-stone-400 bg-white  p-1">
+          <img
+            className=" min-w-full max-w-full   rounded-lg "
+            src={`https://sunal-rahal.vercel.app/api/getWhatsPlaying/${
+              sessionData?.user.id
+                ? getUsername.data?.data
+                  ? getUsername.data.data
                   : "prabincankod"
-              }`}
-              alt=""
-            />
-          </div>
+                : "prabincankod"
+            }`}
+            alt=""
+          />
         </div>
       </div>
     </>

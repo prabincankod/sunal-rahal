@@ -1,4 +1,68 @@
+import { Loader2 } from "lucide-react";
+import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import AuthProvider from "~/components/AuthProvider";
+import { Button } from "~/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "~/components/ui/card";
+import { Input } from "~/components/ui/input";
+import { api } from "~/utils/api";
+
 const Profile = () => {
-  return <h1>hemlo world</h1>;
+  const session = useSession();
+  const getUsername = api.example.getUserName.useQuery(undefined, {
+    enabled: session.status === "authenticated" ? true : false,
+  });
+
+  const mutateUsername = api.example.setUserName.useMutation();
+  const [username, setUsername] = useState("");
+
+  useEffect(() => {
+    const newUsername = getUsername.data?.data;
+    newUsername && setUsername(newUsername);
+  }, [getUsername.data?.data]);
+
+  return (
+    <AuthProvider>
+      <Card>
+        <CardHeader>
+          <CardTitle>Set Username</CardTitle>
+          <CardDescription>Get yourself a username.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="flex w-full   items-center ">
+            <Input
+              placeholder="@username"
+              value={username}
+              onChange={(e) => {
+                setUsername(e.target.value);
+              }}
+            />
+            <Button
+              size={"default"}
+              className="ml-2"
+              onClick={async () => {
+                await mutateUsername.mutateAsync({ newUserName: username });
+                toast.success("Username Updated Successfully");
+              }}
+            >
+              {mutateUsername.isLoading ? (
+                <Loader2 className="h-5 w-5 animate-spin" />
+              ) : (
+                "Subscribe"
+              )}
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+    </AuthProvider>
+  );
 };
 export default Profile;
