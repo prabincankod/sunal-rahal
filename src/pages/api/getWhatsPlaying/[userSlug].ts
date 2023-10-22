@@ -33,8 +33,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       e.response?.statusText === "Unauthorized" &&
         (await prisma.account.update({
           where: { id: user?.accounts[0]?.id },
-          // @ts-ignore
-          data: { access_token: await generateAccessToken(refreshToken) },
+          data: { access_token: await generateAccessToken(refreshToken as string) },
         }));
       return response;
     });
