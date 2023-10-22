@@ -37,9 +37,10 @@ const Profile = () => {
           <CardDescription>Get yourself a username.</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="flex w-full   items-center ">
+          <div className="flex gap-x-2 flex-col gap-y-2 md:flex-row items-center ">
             <Input
               placeholder="@username"
+              className="text-center"
               value={username}
               onChange={(e) => {
                 setUsername(e.target.value);
@@ -47,7 +48,6 @@ const Profile = () => {
             />
             <Button
               size={"default"}
-              className="ml-2"
               onClick={async () => {
                 await mutateUsername.mutateAsync({ newUserName: username });
                 toast.success("Username Updated Successfully");
